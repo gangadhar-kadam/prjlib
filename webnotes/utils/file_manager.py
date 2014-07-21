@@ -168,7 +168,8 @@ def get_new_fname_based_on_version(files_path, main, extn, versions):
 	while os.path.exists(os.path.join(files_path, new_fname).encode("utf-8")):
 		version += 1
 		new_fname = main + "-" + str(version) + "." + extn
-		if version > 100:
+		print new_fname
+		if version > 1000:
 			webnotes.msgprint("Too many versions", raise_exception=True)
 			
 	return new_fname
@@ -181,13 +182,13 @@ def scrub_file_name(fname):
 	return fname
 	
 def check_max_file_size(content):
+	file_size=0
 	max_file_size = conf.get('max_file_size') or 1000000
-	file_size = len(content)
-
-	if file_size > max_file_size:
-		webnotes.msgprint(_("File size exceeded the maximum allowed size"),
-			raise_exception=MaxFileSizeReachedError)
-			
+	if content:
+		file_size = len(content)
+		if file_size > max_file_size:
+			webnotes.msgprint(_("File size exceeded the maximum allowed size"),
+				raise_exception=MaxFileSizeReachedError)
 	return file_size
 
 def write_file(content, files_path):
